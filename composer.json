@@ -9,7 +9,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Core\\" : "src/Core/"
+            "Src\\" : "src/"
         }
     },
     "require-dev": {
@@ -17,6 +17,7 @@
         "mockery/mockery": "^1.5"
     },
     "require": {
-        "guzzlehttp/guzzle": "^7.0"
+        "rakit/validation": "^1.4",
+        "klein/klein": "^2.1"
     }
 }
