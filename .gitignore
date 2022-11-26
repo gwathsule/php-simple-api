@@ -1,6 +1,12 @@
 vendor/
+_reports
 *.log
-.phpunit.result.cache
 .vscode/*
 .idea/*
 .env
+
+#phpunit
+.phpunit.result.cache
+phpunit.report.xml
+phpunit.coverage.xml
+.phpunit.cache
