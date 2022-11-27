@@ -4,7 +4,6 @@ namespace Src\Adapter\Controller;
 
 use Klein\Request;
 use Klein\Response;
-use Klein\Validator;
 
 class CreateFairController implements Controller
 {
