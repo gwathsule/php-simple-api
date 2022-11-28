@@ -1,4 +1,4 @@
-# Feira API
+# APi Simples baseada em Clean Architecture
 
 docker-compose up -d
 
