@@ -36,7 +36,7 @@
 
     <php>
         <env name="APP_ENV" value="testing"/>
-        <env name="SQLITE_PATH" value="storage/test.db" force="true" />
+        <env name="SQLITE_PATH" value="/var/www/storage/test.db" force="true" />
     </php>
 
 </phpunit>
