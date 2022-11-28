@@ -2,18 +2,28 @@
 
 namespace Src\Domain\UseCase\CreateFair;
 
+use Src\Domain\Entity\Fair\FairFactory;
+use Src\Domain\Exception\DuplicatedRegisterException;
 use Src\Domain\Repository\FairRepository;
 
 class CreateFair
 {
-    public function __construct(FairRepository $fairRepository)
+    public function __construct(private FairRepository $fairRepository)
     {
     }
 
-    //cria a lógica de negócio para importar várias Feiras em lote
-    public function execute(InputDto $data) : OutputDto
+    /**
+     * @throws DuplicatedRegisterException
+     */
+    public function execute(InputInputDto $data) : OutputDto
     {
-        throw new \Exception("not implemented");
-        //verifica se não há nenhum registro de ID duplicado, caso o contrário não deixa seguir
+        if($this->fairRepository->find($data->id))
+        {
+            throw new DuplicatedRegisterException($data->id);
+        }
+        $newFair = FairFactory::oneFromArray($data->toArray());
+        $this->fairRepository->save($newFair);
+
+        return OutputDto::buildFromArray($data->toArray());
     }
 }

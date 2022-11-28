@@ -11,10 +11,14 @@ class FairRepositorySqlite extends SqliteRepository implements FairRepository
 {
     private const TABLE_NAME = 'fairs';
 
-    public function save(Fair $fair): bool
+    public function __construct()
+    {
+        $this->createTableIfNotExists($this->getDatabase());
+    }
+
+    public function save(Fair $fair): void
     {
         $db = $this->getDatabase();
-        $this->createTableIfNotExists($db);
         $data = [
             'id' => $fair->get('id'),
             'long' => $fair->get('long'),
@@ -36,7 +40,6 @@ class FairRepositorySqlite extends SqliteRepository implements FairRepository
         ];
         $this->insert($db, self::TABLE_NAME, $data);
         $db->close();
-        return true;
     }
 
     public function update(Fair $fair): bool

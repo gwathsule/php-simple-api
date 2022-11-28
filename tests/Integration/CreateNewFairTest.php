@@ -2,21 +2,38 @@
 
 namespace Test\Integration;
 
-use PHPUnit\Framework\TestCase;
+use GuzzleHttp\Client;
+use Test\DatabaseTestCase;
+use Test\Helpers\Traits\RandomValueGenerator;
 
-class CreateNewFairTest extends TestCase
+class CreateNewFairTest extends DatabaseTestCase
 {
-    //use RandomValueGenerator;
+    use RandomValueGenerator;
 
-    /**
-     * @dataprovider
-     */
-    public function testCreate()
+    private Client $client;
+
+    protected function setUp(): void
     {
-
+        $this->client = new Client([
+            'base_uri' => 'http://nginx',
+            'exceptions' => false
+        ]);
+        parent::setUp();
     }
 
-    public function dataFairProvider()
+    /**
+     * @dataProvider providerFairData
+     */
+    public function testCreate(array $data, array $expected)
+    {
+        $response = $this->client->post('/fair', [
+            'json' => $data
+        ]);
+        $this->assertEquals($expected['status'], $response->getStatusCode());
+        $this->assertEquals($expected['response'], json_decode($response->getBody()->getContents(), true));
+    }
+
+    public function providerFairData()
     {
         $validData = $this->randomFairArrayData();
         $incompleteData = $this->randomFairArrayData();
@@ -24,10 +41,10 @@ class CreateNewFairTest extends TestCase
 
         return [
             'create_with_successful' => [
-                'data' => json_encode($validData),
+                'data' => $validData,
                 'expected' => [
-                    'status_response' => 200,
-                    'data_response' => json_encode($validData)
+                    'status' => 200,
+                    'response' => json_encode($validData)
                 ]
             ],
             //'incomplete_data' => [

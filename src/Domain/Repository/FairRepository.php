@@ -6,7 +6,7 @@ use Src\Domain\Entity\Fair\Fair;
 
 interface FairRepository
 {
-    public function save(Fair $fair): bool;
+    public function save(Fair $fair): void;
 
     public function update(Fair $fair): bool;
 
