@@ -8,7 +8,7 @@ interface FairRepository
 {
     public function save(Fair $fair): void;
 
-    public function update(Fair $fair): bool;
+    public function update(array $attributes, int $id): Fair;
 
     public function delete(int $id): bool;
 

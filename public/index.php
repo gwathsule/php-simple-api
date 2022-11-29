@@ -30,4 +30,22 @@ $server->respond('DELETE', '/fair/[i:id]', function (Request $request, Response 
     return $controller->handle($request, $response);
 });
 
+$server->respond('PUT', '/fair/[i:id]', function (Request $request, Response $response) {
+    //Atualiza
+});
+
+$server->respond('GET', '/fair', function (Request $request, Response $response) {
+    /*
+     * realiza busca por
+    distrito
+    regiao5
+    nome_feira
+    bairro
+     */
+});
+
+$server->respond('POST', '/fairs', function (Request $request, Response $response) {
+    //Importa do CSV
+});
+
 $server->dispatch();

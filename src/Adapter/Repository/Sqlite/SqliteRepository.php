@@ -40,7 +40,6 @@ class SqliteRepository
     protected function getById(SQLite3 $db, string $table, int $id): ?array
     {
         try {
-
             $stm = $db->prepare("SELECT * FROM $table WHERE id = ?");
             $stm->bindValue(1, $id, SQLITE3_INTEGER);
             $res = $stm->execute();
@@ -54,7 +53,30 @@ class SqliteRepository
         return $columns;
     }
 
-    public function deleteById(SQLite3 $db, string $table,  int $id) {
+    public function deleteById(SQLite3 $db, string $table,  int $id)
+    {
         return $db->exec("DELETE FROM $table WHERE id = $id");
+    }
+
+    public function updateById(SQLite3 $db, string $table, array $newAttributes, int $id)
+    {
+        $values = array_map(function($value, $index) {
+            if(gettype($value) == "string") {
+                return "$index = '$value'";
+            }
+            if(is_null($value)) {
+                return "$index = null";
+            }
+            return "$index = $value";
+        }, $newAttributes, array_keys($newAttributes));
+
+        $values = implode(', ', $values);
+        $query = "UPDATE $table SET $values WHERE id = $id";
+
+        try {
+            $db->exec($query);
+        } catch (Exception $ex) {
+            throw new SqliteException($db, 0, $ex);
+        }
     }
 }

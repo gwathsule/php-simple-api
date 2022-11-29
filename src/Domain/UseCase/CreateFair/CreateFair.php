@@ -18,8 +18,7 @@ class CreateFair
     public function execute(InputInputDto $data) : OutputDto
     {
         $fair = $this->fairRepository->find($data->id);
-        if(! is_null($fair))
-        {
+        if(! is_null($fair)) {
             throw new DuplicatedRegisterException($data->id);
         }
         $newFair = FairFactory::oneFromArray($data->toArray());

@@ -34,4 +34,27 @@ class Fair
     {
         $this->$attribute = $value;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'long' => $this->long,
+            'lat' => $this->lat,
+            'setcens' => $this->setcens,
+            'areap' => $this->areap,
+            'coddist' => $this->coddist,
+            'distrito' => $this->distrito,
+            'codsubpref' => $this->codsubpref,
+            'subprefe' => $this->subprefe,
+            'regiao5' => $this->regiao5,
+            'regiao8' => $this->regiao8,
+            'nome_feira' => $this->nome_feira,
+            'registro' => $this->registro,
+            'logradouro' => $this->logradouro,
+            'numero' => $this->numero,
+            'bairro' => $this->bairro,
+            'referencia' => $this->referencia,
+        ];
+    }
 }

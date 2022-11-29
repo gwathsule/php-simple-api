@@ -14,8 +14,7 @@ class DeleteFair
     public function execute($id) : bool
     {
         $fair = $this->fairRepository->find($id);
-        if(is_null($fair))
-        {
+        if(is_null($fair)) {
             throw new ItemNotFoundException();
         }
 

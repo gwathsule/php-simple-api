@@ -42,9 +42,13 @@ class FairRepositorySqlite extends SqliteRepository implements FairRepository
         $db->close();
     }
 
-    public function update(Fair $fair): bool
+    public function update(array $attributes, int $id): Fair
     {
-        // TODO: Implement update() method.
+        $db = $this->getDatabase();
+        $this->updateById($db, self::TABLE_NAME, $attributes, $id);
+        $updatedData = $this->getById($db, self::TABLE_NAME, $id);
+        $db->close();
+        return FairFactory::oneFromArray($updatedData);
     }
 
     public function delete(int $id): bool

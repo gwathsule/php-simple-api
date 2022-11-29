@@ -37,8 +37,8 @@ class DeleteFairTest extends DatabaseTestCase
 
     public function testTryDeleteNonexistent()
     {
-        $dataDuplicated = $this->randomFairArrayData();
-        $fair = FairFactory::oneFromArray($dataDuplicated);
+        $data = $this->randomFairArrayData();
+        $fair = FairFactory::oneFromArray($data);
         $this->expectException(ItemNotFoundException::class);
         $this->useCase->execute($fair->get('id'));
     }
