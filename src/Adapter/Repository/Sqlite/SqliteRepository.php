@@ -53,4 +53,8 @@ class SqliteRepository
         }
         return $columns;
     }
+
+    public function deleteById(SQLite3 $db, string $table,  int $id) {
+        return $db->exec("DELETE FROM $table WHERE id = $id");
+    }
 }

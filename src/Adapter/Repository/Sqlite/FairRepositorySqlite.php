@@ -49,7 +49,10 @@ class FairRepositorySqlite extends SqliteRepository implements FairRepository
 
     public function delete(int $id): bool
     {
-        // TODO: Implement delete() method.
+        $db = $this->getDatabase();
+        $this->deleteById($db, self::TABLE_NAME, $id);
+        $db->close();
+        return true;
     }
 
     public function find(int $id): ?Fair

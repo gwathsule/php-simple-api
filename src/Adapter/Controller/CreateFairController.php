@@ -61,7 +61,7 @@ class CreateFairController implements Controller
             return $response
                 ->code(409)
                 ->json(['message' => $exception->getMessage()]);
-        } catch (Throwable $exception) {
+        } catch (Throwable) {
             return $response
                 ->code(500)
                 ->json(['message' => 'Internal server error.']);
