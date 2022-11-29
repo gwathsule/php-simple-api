@@ -17,4 +17,13 @@ trait WebTestCase
 
         return $controller->handle($requestFake, $responseFake);
     }
+
+    private function delete(Controller $controller, int $id)
+    {
+        $requestFake = new Request();
+        $requestFake->paramsNamed()->set('id', $id);
+        $responseFake = new Response();
+
+        return $controller->handle($requestFake, $responseFake);
+    }
 }

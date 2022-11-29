@@ -2,9 +2,41 @@
 
 namespace Test\Integration;
 
-use PHPUnit\Framework\TestCase;
+use Src\Adapter\Controller\DeleteFairController;
+use Src\Adapter\Repository\Sqlite\FairRepositorySqlite;
+use Src\Domain\Entity\Fair\FairFactory;
+use Test\DatabaseTestCase;
+use Test\Helpers\Traits\RandomValueGenerator;
+use Test\Helpers\Traits\WebTestCase;
 
-class DeleteFairTest extends TestCase
+class DeleteFairTest extends DatabaseTestCase
 {
+    use RandomValueGenerator, WebTestCase;
 
+    public function testDeleteFair()
+    {
+        $duplicated = $this->randomFairArrayData();
+        (new FairRepositorySqlite())->save(FairFactory::oneFromArray($duplicated));
+
+        $response = $this->delete(new DeleteFairController(), $duplicated['id']);
+
+        $this->assertEquals(200,$response->status()->getCode());
+        $this->assertEquals(
+            ["deleted"],
+            json_decode($response->body(), true)
+        );
+    }
+
+    public function testTryDeleteNonexistentFair()
+    {
+        $duplicated = $this->randomFairArrayData();
+
+        $response = $this->delete(new DeleteFairController(), $duplicated['id']);
+
+        $this->assertEquals(404,$response->status()->getCode());
+        $this->assertEquals(
+            ['message' => "Item not found"],
+            json_decode($response->body(), true)
+        );
+    }
 }

@@ -14,31 +14,35 @@ class CreateFairTest extends DatabaseTestCase
 {
     use RandomValueGenerator;
 
+    private FairRepositorySqlite $repository;
+    private UseCase $useCase;
+
+    protected function setUp(): void
+    {
+        $this->repository = new FairRepositorySqlite();
+        $this->useCase = new UseCase($this->repository);
+        parent::setUp();
+    }
+
     public function testCreateFairWithSuccess()
     {
         $data = $this->randomFairArrayData();
-        $repository = new FairRepositorySqlite();
-        $useCase = new UseCase($repository);
         $inputData = InputInputDto::buildFromArray($data);
-        $output = $useCase->execute($inputData);
+        $output = $this->useCase->execute($inputData);
         $this->assertEquals($data, $output->toArray());
     }
 
     public function testTryCreateDuplicatedFair()
     {
-        $repository = new FairRepositorySqlite();
-
         $dataDuplicated = $this->randomFairArrayData();
         $fair = FairFactory::oneFromArray($dataDuplicated);
-        $repository->save($fair);
+        $this->repository->save($fair);
 
         $dataDuplicated = $this->randomFairArrayData();
         $dataDuplicated['id'] = $fair->get('id');
-
-        $useCase = new UseCase($repository);
         $inputData = InputInputDto::buildFromArray($dataDuplicated);
 
         $this->expectException(DuplicatedRegisterException::class);
-        $useCase->execute($inputData);
+        $this->useCase->execute($inputData);
     }
 }

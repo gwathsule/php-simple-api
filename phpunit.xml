@@ -36,6 +36,7 @@
 
     <php>
         <env name="APP_ENV" value="testing"/>
+        <ini name="error_reporting" value="0" />
         <env name="SQLITE_PATH" value="/var/www/storage/test.db" force="true" />
     </php>
 
