@@ -2,37 +2,39 @@
 
 namespace Test\Integration;
 
-use GuzzleHttp\Client;
+use Src\Adapter\Controller\CreateFairController;
 use Src\Adapter\Repository\Sqlite\FairRepositorySqlite;
 use Src\Domain\Entity\Fair\FairFactory;
 use Test\DatabaseTestCase;
 use Test\Helpers\Traits\RandomValueGenerator;
+use Test\Helpers\Traits\WebTestCase;
 
 class CreateNewFairTest extends DatabaseTestCase
 {
-    use RandomValueGenerator;
-
-    private Client $client;
-
-    protected function setUp(): void
-    {
-        $this->client = new Client([
-            'base_uri' => 'http://nginx',
-            'http_errors' => false
-        ]);
-        parent::setUp();
-    }
+    use RandomValueGenerator, WebTestCase;
 
     /**
      * @dataProvider providerFairData
      */
     public function testCreate(array $data, array $expected)
     {
-        $response = $this->client->post('/fair', [
-            'json' => $data
-        ]);
-        $this->assertEquals($expected['status'], $response->getStatusCode());
-        $this->assertEquals($expected['response'], json_decode($response->getBody()->getContents(), true));
+        $response = $this->post(new CreateFairController(), $data);
+        $this->assertEquals($expected['status'], $response->status()->getCode());
+        $this->assertEquals($expected['response'], json_decode($response->body(), true));
+    }
+
+    public function testTrySaveDuplicatedFair()
+    {
+        $duplicated = $this->randomFairArrayData();
+        (new FairRepositorySqlite())->save(FairFactory::oneFromArray($duplicated));
+
+        $response = $this->post(new CreateFairController(), $duplicated);
+
+        $this->assertEquals(409,$response->status()->getCode());
+        $this->assertEquals(
+            ["message" => "The register id {$duplicated["id"]} is duplicated"],
+            json_decode($response->body(), true)
+        );
     }
 
     public function providerFairData()
