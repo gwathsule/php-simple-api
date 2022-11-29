@@ -70,9 +70,12 @@ class FairRepositorySqlite extends SqliteRepository implements FairRepository
         return FairFactory::oneFromArray($data);
     }
 
-    public function getBy(string $attribute, string $value): array
+    public function filterBy(array $filters) : array
     {
-        // TODO: Implement getBy() method.
+        $db = $this->getDatabase();
+        $data = $this->filter($db, self::TABLE_NAME, $filters);
+        $db->close();
+        return FairFactory::manyFromArray($data);
     }
 
 

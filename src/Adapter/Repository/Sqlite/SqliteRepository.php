@@ -79,4 +79,32 @@ class SqliteRepository
             throw new SqliteException($db, 0, $ex);
         }
     }
+
+    public function filter(SQLite3 $db, string $table, array $filters): array
+    {
+        try {
+            $filters = array_filter($filters);
+            $binds = array_map(fn($index) => !is_null($filters[$index]) ? "$index = ?" : "", array_keys($filters));
+            $binds = implode(' AND ', $binds);
+
+            $stm = $db->prepare("SELECT * FROM $table WHERE ($binds)");
+
+            $param = 1;
+            foreach ($filters as $filter) {
+                $stm->bindValue($param, $filter);
+                $param++;
+            }
+
+            $res = $stm->execute();
+        } catch (Exception $ex) {
+            throw new SqliteException($db, 0, $ex);
+        }
+
+        $columns = [];
+
+        while ($row = $res->fetchArray(SQLITE3_ASSOC)) {
+            array_push($columns, $row);
+        }
+        return $columns;
+    }
 }

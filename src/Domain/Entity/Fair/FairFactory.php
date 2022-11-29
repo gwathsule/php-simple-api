@@ -26,4 +26,14 @@ class FairFactory
             referencia: $array['referencia'] ?? null
         );
     }
+
+    public static function manyFromArray($fairsData): array
+    {
+        $listOfFairs = [];
+        foreach ($fairsData as $fairData) {
+            $fair = self::oneFromArray($fairData);
+            array_push($listOfFairs, $fair);
+        }
+        return $listOfFairs;
+    }
 }

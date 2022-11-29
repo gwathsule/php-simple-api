@@ -12,6 +12,7 @@ use Klein\Response;
 use Src\Adapter\Controller\CreateFairController;
 use Src\Adapter\Controller\DeleteFairController;
 use Src\Adapter\Controller\UpdateFairController;
+use Src\Adapter\Controller\FilterFairController;
 
 require_once '../vendor/autoload.php';
 
@@ -37,13 +38,8 @@ $server->respond('PUT', '/fair/[i:id]', function (Request $request, Response $re
 });
 
 $server->respond('GET', '/fair', function (Request $request, Response $response) {
-    /*
-     * realiza busca por
-    distrito
-    regiao5
-    nome_feira
-    bairro
-     */
+    $controller = new FilterFairController();
+    return $controller->handle($request, $response);
 });
 
 $server->respond('POST', '/fairs', function (Request $request, Response $response) {

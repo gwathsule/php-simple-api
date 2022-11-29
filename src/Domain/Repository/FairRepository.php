@@ -14,5 +14,5 @@ interface FairRepository
 
     public function find(int $id): ?Fair;
 
-    public function getBy(string $attribute, string $value): array;
+    public function filterBy(array $filters) : array;
 }

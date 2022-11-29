@@ -33,4 +33,12 @@ trait WebTestCase
 
         return $controller->handle($requestFake, $responseFake);
     }
+
+    private function get(Controller $controller, array $params)
+    {
+        $requestFake = new Request(params_get: $params);
+        $responseFake = new Response();
+
+        return $controller->handle($requestFake, $responseFake);
+    }
 }
