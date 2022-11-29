@@ -15,10 +15,10 @@ class DeleteFairTest extends DatabaseTestCase
 
     public function testDeleteFair()
     {
-        $duplicated = $this->randomFairArrayData();
-        (new FairRepositorySqlite())->save(FairFactory::oneFromArray($duplicated));
+        $data = $this->randomFairArrayData();
+        (new FairRepositorySqlite())->save(FairFactory::oneFromArray($data));
 
-        $response = $this->delete(new DeleteFairController(), $duplicated['id']);
+        $response = $this->delete(new DeleteFairController(), $data['id']);
 
         $this->assertEquals(200,$response->status()->getCode());
         $this->assertEquals(
@@ -29,9 +29,9 @@ class DeleteFairTest extends DatabaseTestCase
 
     public function testTryDeleteNonexistentFair()
     {
-        $duplicated = $this->randomFairArrayData();
+        $data = $this->randomFairArrayData();
 
-        $response = $this->delete(new DeleteFairController(), $duplicated['id']);
+        $response = $this->delete(new DeleteFairController(), $data['id']);
 
         $this->assertEquals(404,$response->status()->getCode());
         $this->assertEquals(

@@ -11,6 +11,7 @@ use Klein\Request;
 use Klein\Response;
 use Src\Adapter\Controller\CreateFairController;
 use Src\Adapter\Controller\DeleteFairController;
+use Src\Adapter\Controller\UpdateFairController;
 
 require_once '../vendor/autoload.php';
 
@@ -31,7 +32,8 @@ $server->respond('DELETE', '/fair/[i:id]', function (Request $request, Response 
 });
 
 $server->respond('PUT', '/fair/[i:id]', function (Request $request, Response $response) {
-    //Atualiza
+    $controller = new UpdateFairController();
+    return $controller->handle($request, $response);
 });
 
 $server->respond('GET', '/fair', function (Request $request, Response $response) {

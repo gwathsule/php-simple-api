@@ -22,6 +22,7 @@ class UpdateFair
         if($dataToUpdate === []) {
             return OutputDto::buildFromArray($fair->toArray());
         }
+        unset($dataToUpdate['id']);
 
         $fairUpdated = $this->fairRepository->update($dataToUpdate, $id);
 

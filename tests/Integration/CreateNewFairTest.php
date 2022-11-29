@@ -51,7 +51,7 @@ class CreateNewFairTest extends DatabaseTestCase
                     'response' => $validData
                 ]
             ],
-            'incomplete_data' => [
+            'validation_data' => [
                 'data' => $incompleteData,
                 'expected' => [
                     'status' => 400,
