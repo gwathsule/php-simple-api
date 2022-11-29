@@ -16,9 +16,20 @@ class SqliteRepository
     protected function insert(SQLite3 $db, string $table, array $data)
     {
         $columns = implode(',', array_keys($data));
-        $values = array_map(fn($value) => gettype($value) == "string" ? "'$value'" : $value, $data);
+
+        $values = array_map(function($value) {
+            if(gettype($value) == "string") {
+                return "'$value'";
+            }
+            if(is_null($value)) {
+                return "null";
+            }
+            return $value;
+        }, $data);
+
         $values = implode(', ', $values);
         $query = "INSERT INTO $table($columns) VALUES ($values)";
+
         try {
             $db->exec($query);
         } catch (Exception $ex) {

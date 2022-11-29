@@ -19,8 +19,9 @@ class CreateFairController implements Controller
         try {
             $repository = new FairRepositorySqlite();
             $useCase = new CreateFair($repository);
+            $inputs = json_decode($request->body(), true);
 
-            $validation = $this->buildValidator($request);
+            $validation = $this->buildValidator($inputs);
             $validation->validate();
 
             if ($validation->fails()) {
@@ -29,28 +30,28 @@ class CreateFairController implements Controller
                     ->code(400)
                     ->json([
                         'message' => 'Validation error',
-                        'errors' => $errors
+                        'errors' => $errors->firstOfAll()
                     ]);
             }
 
             $inputData = new InputInputDto(
-                id: $request->param('id'),
-                long: $request->param('long'),
-                lat: $request->param('lat'),
-                setcens: $request->param('setcens'),
-                areap: $request->param('areap'),
-                coddist: $request->param('coddist'),
-                distrito: $request->param('distrito'),
-                codsubpref: $request->param('codsubpref'),
-                subprefe: $request->param('subprefe'),
-                regiao5: $request->param('regiao5'),
-                regiao8: $request->param('regiao8'),
-                nome_feira: $request->param('nome_feira'),
-                registro: $request->param('registro'),
-                logradouro: $request->param('logradouro'),
-                numero: $request->param('numero'),
-                bairro: $request->param('bairro'),
-                referencia: $request->param('referencia'),
+                id: $inputs['id'],
+                long: $inputs['long'],
+                lat: $inputs['lat'],
+                setcens: $inputs['setcens'],
+                areap: $inputs['areap'],
+                coddist: $inputs['coddist'],
+                distrito: $inputs['distrito'],
+                codsubpref: $inputs['codsubpref'],
+                subprefe: $inputs['subprefe'],
+                regiao5: $inputs['regiao5'],
+                regiao8: $inputs['regiao8'],
+                nome_feira: $inputs['nome_feira'],
+                registro: $inputs['registro'],
+                logradouro: $inputs['logradouro'],
+                numero: $inputs['numero'] ?? null,
+                bairro: $inputs['bairro'],
+                referencia: $inputs['referencia'] ?? null,
             );
 
             $output = $useCase->execute($inputData);
@@ -58,7 +59,7 @@ class CreateFairController implements Controller
 
         } catch (DuplicatedRegisterException $exception) {
             return $response
-                ->code(400)
+                ->code(409)
                 ->json(['message' => $exception->getMessage()]);
         } catch (Throwable $exception) {
             return $response
@@ -67,10 +68,10 @@ class CreateFairController implements Controller
         }
     }
 
-    private function buildValidator(Request $request): Validation
+    private function buildValidator(array $inputs): Validation
     {
         $validator = new Validator;
-        return $validator->make(json_decode($request->body(), true), [
+        return $validator->make($inputs, [
             'id'   => 'required|numeric',
             'long'   => 'required|numeric',
             'lat'   => 'required|numeric',
@@ -85,9 +86,7 @@ class CreateFairController implements Controller
             'nome_feira'   => 'required',
             'registro'   => 'required',
             'logradouro'   => 'required',
-            'numero'   => 'required',
             'bairro'   => 'required',
-            'referencia'   => 'required',
         ]);
     }
 }

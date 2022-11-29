@@ -21,9 +21,9 @@ class FairFactory
             nome_feira: $array['nome_feira'],
             registro: $array['registro'],
             logradouro: $array['logradouro'],
-            numero: $array['numero'],
+            numero: $array['numero'] ?? null,
             bairro: $array['bairro'],
-            referencia: $array['referencia']
+            referencia: $array['referencia'] ?? null
         );
     }
 }

@@ -19,9 +19,9 @@ class Fair
         private string $nome_feira,
         private string $registro,
         private string $logradouro,
-        private string $numero,
+        private ?string $numero,
         private string $bairro,
-        private string $referencia
+        private ?string $referencia
     ) {
     }
 

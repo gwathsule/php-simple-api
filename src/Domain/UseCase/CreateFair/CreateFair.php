@@ -17,7 +17,8 @@ class CreateFair
      */
     public function execute(InputInputDto $data) : OutputDto
     {
-        if($this->fairRepository->find($data->id))
+        $fair = $this->fairRepository->find($data->id);
+        if(! is_null($fair))
         {
             throw new DuplicatedRegisterException($data->id);
         }

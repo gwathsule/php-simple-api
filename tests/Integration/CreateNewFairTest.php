@@ -3,6 +3,8 @@
 namespace Test\Integration;
 
 use GuzzleHttp\Client;
+use Src\Adapter\Repository\Sqlite\FairRepositorySqlite;
+use Src\Domain\Entity\Fair\FairFactory;
 use Test\DatabaseTestCase;
 use Test\Helpers\Traits\RandomValueGenerator;
 
@@ -16,7 +18,7 @@ class CreateNewFairTest extends DatabaseTestCase
     {
         $this->client = new Client([
             'base_uri' => 'http://nginx',
-            'exceptions' => false
+            'http_errors' => false
         ]);
         parent::setUp();
     }
@@ -37,33 +39,28 @@ class CreateNewFairTest extends DatabaseTestCase
     {
         $validData = $this->randomFairArrayData();
         $incompleteData = $this->randomFairArrayData();
-        $incompleteData = $this->removeDataFromArray('distrito', $incompleteData);
+        unset($incompleteData['distrito']);
 
         return [
             'create_with_successful' => [
                 'data' => $validData,
                 'expected' => [
                     'status' => 200,
-                    'response' => json_encode($validData)
+                    'response' => $validData
                 ]
             ],
-            //'incomplete_data' => [
-            //    'data' => json_encode($validData),
-            //    'expected' => [
-            //        'status_response' => 200,
-            //        'data_response' => json_encode($validData)
-            //    ]
-            //]
+            'incomplete_data' => [
+                'data' => $incompleteData,
+                'expected' => [
+                    'status' => 400,
+                    'response' => [
+                        "message" => "Validation error",
+                        "errors" => [
+                            "distrito" => "The Distrito is required"
+                        ]
+                    ]
+                ]
+            ]
         ];
-    }
-
-    private function removeDataFromArray(string $data, array $fullData): array
-    {
-        $key = array_search($data, $fullData);
-        if($key!==false){
-            unset($fullData[$key]);
-        }
-
-        return $fullData;
     }
 }
