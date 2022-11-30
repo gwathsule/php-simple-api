@@ -1,6 +1,6 @@
 <?php
 
-error_reporting(E_ALL ^ E_DEPRECATED);
+error_reporting(E_ERROR | E_PARSE);
 
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
@@ -13,6 +13,7 @@ use Src\Adapter\Controller\CreateFairController;
 use Src\Adapter\Controller\DeleteFairController;
 use Src\Adapter\Controller\UpdateFairController;
 use Src\Adapter\Controller\FilterFairController;
+use Src\Adapter\Controller\ImportFairsController;
 
 require_once '../vendor/autoload.php';
 
@@ -42,8 +43,9 @@ $server->respond('GET', '/fair', function (Request $request, Response $response)
     return $controller->handle($request, $response);
 });
 
-$server->respond('POST', '/fairs', function (Request $request, Response $response) {
-    //Importa do CSV
+$server->respond('POST', '/fair/import', function (Request $request, Response $response) {
+    $controller = new ImportFairsController();
+    return $controller->handle($request, $response);
 });
 
 $server->dispatch();

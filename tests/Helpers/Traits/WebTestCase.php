@@ -16,6 +16,29 @@ trait WebTestCase
         return $controller->handle($requestFake, $responseFake);
     }
 
+    private function postWithFile(
+        Controller $controller,
+        string $path,
+        string $name,
+        string $type,
+    )
+    {
+        $files = [
+            'csv_file' => [
+                'name' => $name,
+                'full_path' => $name,
+                'type' => $type,
+                'tmp_name' => $path,
+                'error' => 0,
+                'size' => 863,
+            ],
+        ];
+        $requestFake = new Request(files: $files);
+        $responseFake = new Response();
+
+        return $controller->handle($requestFake, $responseFake);
+    }
+
     private function delete(Controller $controller, int $id)
     {
         $requestFake = new Request();
