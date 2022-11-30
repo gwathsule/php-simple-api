@@ -54,4 +54,26 @@ class ImportFairsFromCsvTest extends DatabaseTestCase
             json_decode($response->body(), true)
         );
     }
+
+    public function testTryImportInvalidFile()
+    {
+        $response = $this->postWithFile(
+            controller: new ImportFairsController(),
+            path : '/var/www/storage/stubs/example.csv',
+            name : 'example.csv',
+            type : 'text/csv',
+        );
+
+        $expected =  [
+            'message' => 'Validation error',
+            'errors' => [
+                'csv_file' => 'The Csv file is not valid uploaded file',
+            ]
+        ];
+
+        $this->assertEquals(
+            $expected,
+            json_decode($response->body(), true)
+        );
+    }
 }

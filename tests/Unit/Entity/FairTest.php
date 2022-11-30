@@ -25,4 +25,12 @@ class FairTest extends DatabaseTestCase
             $this->assertEquals($randomData[$attribute], $savedFair->get($attribute));
         }
     }
+
+    public function testSetAttribute()
+    {
+        $randomData = $this->randomFairArrayData();
+        $fair = FairFactory::oneFromArray($randomData);
+        $fair->set('id', $randomData['id'] + 10);
+        $this->assertNotEquals($randomData['id'], $fair->get('id'));
+    }
 }

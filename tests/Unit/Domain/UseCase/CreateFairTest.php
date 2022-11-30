@@ -5,7 +5,7 @@ namespace Domain\UseCase;
 use Src\Adapter\Repository\Sqlite\FairRepositorySqlite;
 use Src\Domain\Entity\Fair\FairFactory;
 use Src\Domain\Exception\DuplicatedRegisterException;
-use Src\Domain\UseCase\CreateFair\InputInputDto;
+use Src\Domain\UseCase\CreateFair\InputDto;
 use Test\DatabaseTestCase;
 use Src\Domain\UseCase\CreateFair\CreateFair as UseCase;
 use Test\Helpers\Traits\RandomValueGenerator;
@@ -27,7 +27,7 @@ class CreateFairTest extends DatabaseTestCase
     public function testCreateFairWithSuccess()
     {
         $data = $this->randomFairArrayData();
-        $inputData = InputInputDto::buildFromArray($data);
+        $inputData = InputDto::buildFromArray($data);
         $output = $this->useCase->execute($inputData);
         $this->assertEquals($data, $output->toArray());
     }
@@ -40,7 +40,7 @@ class CreateFairTest extends DatabaseTestCase
 
         $dataDuplicated = $this->randomFairArrayData();
         $dataDuplicated['id'] = $fair->get('id');
-        $inputData = InputInputDto::buildFromArray($dataDuplicated);
+        $inputData = InputDto::buildFromArray($dataDuplicated);
 
         $this->expectException(DuplicatedRegisterException::class);
         $this->useCase->execute($inputData);

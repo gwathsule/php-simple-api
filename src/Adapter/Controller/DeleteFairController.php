@@ -24,7 +24,7 @@ class DeleteFairController implements Controller
     public function handle(Request $request, Response $response): Response
     {
         try {
-            $useCase = new DeleteFair($this->repository);
+            $useCase = new DeleteFair($this->repository, $this->logger);
             $useCase->execute($request->paramsNamed()->get('id'));
             return $response->json(['deleted']);
         } catch (ItemNotFoundException $exception) {

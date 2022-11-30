@@ -9,7 +9,7 @@ use Src\Domain\Contracts\Logger;
 use Src\Domain\Exception\DuplicatedRegisterException;
 use Src\Domain\Repository\FairRepository;
 use Src\Domain\UseCase\CreateFair\CreateFair;
-use Src\Domain\UseCase\CreateFair\InputInputDto;
+use Src\Domain\UseCase\CreateFair\InputDto;
 use Rakit\Validation\Validator;
 use Rakit\Validation\Validation;
 use Src\Infra\Log\FileLogAdapter;
@@ -29,7 +29,7 @@ class CreateFairController implements Controller
     {
         try {
 
-            $useCase = new CreateFair($this->repository, $this->logger);
+            $useCase = new CreateFair($this->repository);
             $inputs = json_decode($request->body(), true);
 
             $validation = $this->buildValidator($inputs);
@@ -45,7 +45,7 @@ class CreateFairController implements Controller
                     ]);
             }
 
-            $inputData = new InputInputDto(
+            $inputData = new InputDto(
                 id: $inputs['id'],
                 long: $inputs['long'],
                 lat: $inputs['lat'],

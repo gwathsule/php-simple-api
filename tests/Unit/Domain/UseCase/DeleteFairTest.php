@@ -5,6 +5,7 @@ namespace Domain\UseCase;
 use Src\Adapter\Repository\Sqlite\FairRepositorySqlite;
 use Src\Domain\Entity\Fair\FairFactory;
 use Src\Domain\Exception\ItemNotFoundException;
+use Src\Infra\Log\FileLogAdapter;
 use Test\DatabaseTestCase;
 use Test\Helpers\Traits\RandomValueGenerator;
 use Src\Domain\UseCase\DeleteFair\DeleteFair as UseCase;
@@ -19,7 +20,7 @@ class DeleteFairTest extends DatabaseTestCase
     protected function setUp(): void
     {
         $this->repository = new FairRepositorySqlite();
-        $this->useCase = new UseCase($this->repository);
+        $this->useCase = new UseCase($this->repository, new FileLogAdapter());
         parent::setUp();
     }
 

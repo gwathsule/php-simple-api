@@ -4,7 +4,6 @@ namespace Src\Adapter\Repository\Sqlite;
 
 use SQLite3;
 use Exception;
-use Src\Adapter\Exception\SqliteException;
 
 class SqliteRepository
 {
@@ -32,8 +31,8 @@ class SqliteRepository
 
         try {
             $db->exec($query);
-        } catch (Exception $ex) {
-            throw new SqliteException($db, 0, $ex);
+        } catch (Exception) {
+            throw new Exception('Error trying insert on database');
         }
     }
 
@@ -44,7 +43,7 @@ class SqliteRepository
             $stm->bindValue(1, $id, SQLITE3_INTEGER);
             $res = $stm->execute();
         } catch (Exception $ex) {
-            throw new SqliteException($db, 0, $ex);
+            throw new Exception('Error trying recover on database');
         }
         $columns = $res->fetchArray(SQLITE3_ASSOC);
         if(! $columns) {
@@ -75,8 +74,8 @@ class SqliteRepository
 
         try {
             $db->exec($query);
-        } catch (Exception $ex) {
-            throw new SqliteException($db, 0, $ex);
+        } catch (Exception) {
+            throw new Exception('Error trying update on database');
         }
     }
 
@@ -96,8 +95,8 @@ class SqliteRepository
             }
 
             $res = $stm->execute();
-        } catch (Exception $ex) {
-            throw new SqliteException($db, 0, $ex);
+        } catch (Exception) {
+            throw new Exception('Error trying recover on database');
         }
 
         $columns = [];
