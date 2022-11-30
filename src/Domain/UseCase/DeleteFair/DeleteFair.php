@@ -2,12 +2,13 @@
 
 namespace Src\Domain\UseCase\DeleteFair;
 
+use Src\Domain\Contracts\Logger;
 use Src\Domain\Exception\ItemNotFoundException;
 use Src\Domain\Repository\FairRepository;
 
 class DeleteFair
 {
-    public function __construct(private FairRepository $fairRepository)
+    public function __construct(private FairRepository $fairRepository, private Logger $logger)
     {
     }
 
@@ -17,7 +18,8 @@ class DeleteFair
         if(is_null($fair)) {
             throw new ItemNotFoundException();
         }
-
-        return $this->fairRepository->delete($fair->get('id'));
+        $this->fairRepository->delete($fair->get('id'));
+        $this->logger->logInfo('Deleted Fair', $fair->toArray());
+        return true;
     }
 }

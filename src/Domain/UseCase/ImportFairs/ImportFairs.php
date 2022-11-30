@@ -2,13 +2,14 @@
 
 namespace Src\Domain\UseCase\ImportFairs;
 
+use Src\Domain\Contracts\Logger;
 use Src\Domain\Entity\Fair\Fair;
 use Src\Domain\Repository\FairRepository;
 use Throwable;
 
 class ImportFairs
 {
-    public function __construct(private FairRepository $fairRepository)
+    public function __construct(private FairRepository $fairRepository, private Logger $logger)
     {
     }
 
@@ -35,11 +36,16 @@ class ImportFairs
             }
         }
 
-        return new OutputDto(
+
+        $outuput = new OutputDto(
             created: $created,
             duplicatedIds: $duplicatedIds,
             linesWithErrors: $linesWithErrors
         );
+
+        $this->logger->logInfo('Import by CSV', $outuput->toArray());
+
+        return $outuput;
     }
 
     private function isDuplicated(int $id): bool

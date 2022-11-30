@@ -2,13 +2,14 @@
 
 namespace Src\Domain\UseCase\CreateFair;
 
+use Src\Domain\Contracts\Logger;
 use Src\Domain\Entity\Fair\FairFactory;
 use Src\Domain\Exception\DuplicatedRegisterException;
 use Src\Domain\Repository\FairRepository;
 
 class CreateFair
 {
-    public function __construct(private FairRepository $fairRepository)
+    public function __construct(private FairRepository $fairRepository, private Logger $logger)
     {
     }
 
@@ -23,7 +24,7 @@ class CreateFair
         }
         $newFair = FairFactory::oneFromArray($data->toArray());
         $this->fairRepository->save($newFair);
-
+        $this->logger->logInfo('Created new Fair', $data->toArray());
         return OutputDto::buildFromArray($data->toArray());
     }
 }

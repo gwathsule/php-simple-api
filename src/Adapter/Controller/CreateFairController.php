@@ -5,20 +5,31 @@ namespace Src\Adapter\Controller;
 use Klein\Request;
 use Klein\Response;
 use Src\Adapter\Repository\Sqlite\FairRepositorySqlite;
+use Src\Domain\Contracts\Logger;
 use Src\Domain\Exception\DuplicatedRegisterException;
+use Src\Domain\Repository\FairRepository;
 use Src\Domain\UseCase\CreateFair\CreateFair;
 use Src\Domain\UseCase\CreateFair\InputInputDto;
 use Rakit\Validation\Validator;
 use Rakit\Validation\Validation;
+use Src\Infra\Log\FileLogAdapter;
 use Throwable;
 
 class CreateFairController implements Controller
 {
+
+    public function __construct(
+        private Validator $validator = new Validator(),
+        private Logger $logger = new FileLogAdapter(),
+        private FairRepository $repository = new FairRepositorySqlite()
+    ) {
+    }
+
     public function handle(Request $request, Response $response): Response
     {
         try {
-            $repository = new FairRepositorySqlite();
-            $useCase = new CreateFair($repository);
+
+            $useCase = new CreateFair($this->repository, $this->logger);
             $inputs = json_decode($request->body(), true);
 
             $validation = $this->buildValidator($inputs);
@@ -58,10 +69,12 @@ class CreateFairController implements Controller
             return $response->json($output->toArray());
 
         } catch (DuplicatedRegisterException $exception) {
+            $this->logger->logException($exception);
             return $response
                 ->code(409)
                 ->json(['message' => $exception->getMessage()]);
-        } catch (Throwable) {
+        } catch (Throwable $exception) {
+            $this->logger->logException($exception);
             return $response
                 ->code(500)
                 ->json(['message' => 'Internal server error.']);
@@ -70,8 +83,7 @@ class CreateFairController implements Controller
 
     private function buildValidator(array $inputs): Validation
     {
-        $validator = new Validator;
-        return $validator->make($inputs, [
+        return $this->validator->make($inputs, [
             'id'   => 'required|numeric',
             'long'   => 'required|numeric',
             'lat'   => 'required|numeric',

@@ -7,17 +7,26 @@ use Klein\Response;
 use Rakit\Validation\Validation;
 use Rakit\Validation\Validator;
 use Src\Adapter\Repository\Sqlite\FairRepositorySqlite;
+use Src\Domain\Contracts\Logger;
 use Src\Domain\Exception\ItemNotFoundException;
+use Src\Domain\Repository\FairRepository;
 use Src\Domain\UseCase\UpdateFair\UpdateFair;
+use Src\Infra\Log\FileLogAdapter;
 use Throwable;
 
 class UpdateFairController implements Controller
 {
+    public function __construct(
+        private Validator $validator = new Validator(),
+        private Logger $logger = new FileLogAdapter(),
+        private FairRepository $repository = new FairRepositorySqlite()
+    ) {
+    }
+
     public function handle(Request $request, Response $response): Response
     {
         try {
-            $repository = new FairRepositorySqlite();
-            $useCase = new UpdateFair($repository);
+            $useCase = new UpdateFair($this->repository);
             $updateDate = json_decode($request->body(), true);
 
             $validation = $this->buildValidator($updateDate);
@@ -36,10 +45,12 @@ class UpdateFairController implements Controller
             return $response->json($output->toArray());
 
         } catch (ItemNotFoundException $exception) {
+            $this->logger->logException($exception);
             return $response
                 ->code(404)
                 ->json(['message' => $exception->getMessage()]);
-        } catch (Throwable) {
+        } catch (Throwable $exception) {
+            $this->logger->logException($exception);
             return $response
                 ->code(500)
                 ->json(['message' => 'Internal server error.']);
@@ -48,8 +59,7 @@ class UpdateFairController implements Controller
 
     private function buildValidator(array $inputs): Validation
     {
-        $validator = new Validator;
-        return $validator->make($inputs, [
+        return $this->validator->make($inputs, [
             'long'   => 'nullable|numeric',
             'lat'   => 'nullable|numeric',
             'setcens'   => 'nullable',

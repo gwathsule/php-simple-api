@@ -2,15 +2,9 @@
 
 namespace Src\Domain\UseCase\CreateFair;
 
-use Src\Domain\Contracts\OutputDtoObjects;
 
-class OutputDto extends InputInputDto implements OutputDtoObjects
+class OutputDto extends InputInputDto
 {
-    public function toJson(): string
-    {
-        return json_encode($this->toArray());
-    }
-
     public static function buildFromArray(array $attributes) : self
     {
         return new self(

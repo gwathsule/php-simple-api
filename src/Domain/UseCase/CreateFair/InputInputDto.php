@@ -2,9 +2,7 @@
 
 namespace Src\Domain\UseCase\CreateFair;
 
-use Src\Domain\Contracts\InputDtoObjects;
-
-class InputInputDto implements InputDtoObjects
+class InputInputDto
 {
     public function __construct(
          public readonly int $id,

@@ -2,7 +2,11 @@
 
 namespace Src\Domain\Contracts;
 
+use Throwable;
+
 interface Logger
 {
-    public function log(string $json);
+    public function logException(Throwable $exception): void;
+
+    public function logInfo(string $title, array $data): void;
 }
