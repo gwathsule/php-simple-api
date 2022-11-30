@@ -1,0 +1,152 @@
+{
+	"info": {
+		"_postman_id": "ac28adbf-b3e8-4410-8619-b4568275193b",
+		"name": "Simple PHP API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5181679"
+	},
+	"item": [
+		{
+			"name": "/fair",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"30\",\r\n    \"long\": \"-46550164\",\r\n    \"lat\": \"-23558733\",\r\n    \"setcens\": \"355030885000091\",\r\n    \"areap\": \"3550308005040 \",\r\n    \"coddist\": \"87\",\r\n    \"distrito\": \"VILA FORMOSA\",\r\n    \"codsubpref\": \"26\",\r\n    \"subprefe\": \"ARICANDUVA-FORMOSA-CARRAO\",\r\n    \"regiao5\": \"Leste\",\r\n    \"regiao8\": \"Leste 1\",\r\n    \"nome_feira\": \"VILA FORMOSA\",\r\n    \"registro\": \"4041-0 \",\r\n    \"logradouro\": \"RUA MARAGOJIPE\",\r\n    \"bairro\": \"VL FORMOSA\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8888/fair",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"fair"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/fair/{id}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8888/fair/27",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"fair",
+						"27"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/fair/{id}",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"subprefe\" : \"testando\",\r\n    \"codsubpref\": \"teste\",\r\n    \"numero\": null,\r\n    \"referencia\": \"teste\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8888/fair/26",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"fair",
+						"26"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/fair",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8888/fair?distrito=123&regiao5=25&nome_feira=test&bairro=testing",
+					"host": [
+						"localhost"
+					],
+					"port": "8888",
+					"path": [
+						"fair"
+					],
+					"query": [
+						{
+							"key": "distrito",
+							"value": "123"
+						},
+						{
+							"key": "regiao5",
+							"value": "25"
+						},
+						{
+							"key": "nome_feira",
+							"value": "test"
+						},
+						{
+							"key": "bairro",
+							"value": "testing"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/fair/import",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "csv_file",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "/fair/import",
+					"path": [
+						"fair",
+						"import"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
