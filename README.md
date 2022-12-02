@@ -21,27 +21,27 @@ A API tem por objetivo o cadastro de feiras em regiões metropolitanas;
 
 1. Clone o projeto para o seu diretório
 ```bash
-  $ git clone git@github.com:gwathsule/php-simple-api.git
+  git clone git@github.com:gwathsule/php-simple-api.git
 ```
 2. Entre no diretório do projeto
 ```bash
-  $ cd php-simple-api
+  cd php-simple-api
 ```
 3. Faça uma cópia do arquivo `.env.example` chamado `.env`
 ```bash
-  $ cp .env.example .env
+  cp .env.example .env
 ```
 4. Faça o build do container docker da aplicação 
 ```bash
-  $ docker-compose up -d
+  docker-compose up -d
 ```
 5. Instale as dependências
 ```bash
-  $ docker-compose exec -it app composer install
+  docker-compose exec -it app composer install
 ```
 6. Associe a pasta storage ao usuário www-data 
 ```bash
-  $ docker-compose exec -it app chown www-data:www-data -R /var/www/storage
+  docker-compose exec -it app chown www-data:www-data -R /var/www/storage
 ```
 
 Após essas etapas o sistema deverá estar rodando no endereço [http://localhost:8888](http://localhost:8888)
@@ -50,7 +50,7 @@ Após essas etapas o sistema deverá estar rodando no endereço [http://localhos
 A aplicação foi construida seguindo ~ou tentando~ os conceitos de TDD, e para os testes unitários e de integração foi utilizado a bilbioteca `phpunit`.
 Para rodar os testes localmente em sua máquina rode o comando abaixo:
 ```
-  $ docker-compose exec -it app vendor/bin/phpunit  --testdox --coverage-html _reports/coverage/
+  docker-compose exec -it app vendor/bin/phpunit  --testdox --coverage-html _reports/coverage/
 ```
 Esse comando, além de rodar os testes presentes no software, cria um relatório sobre a cobertura dos testes presentes no sofwtare.
 O relatórios fica disponível na pasta `_reports/coverage/index.html` ou neste [endereço](http://localhost:63342/php-simple-api/_reports/coverage/index.html).
