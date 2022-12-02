@@ -53,7 +53,7 @@ Para rodar os testes localmente em sua máquina rode o comando abaixo:
 Esse comando, além de rodar os testes presentes no software, cria um relatório sobre a cobertura dos testes presentes no sofwtare.
 O relatórios fica disponível na pasta `_reports/coverage/index.html` ou neste [endereço](http://localhost:63342/php-simple-api/_reports/coverage/index.html).
 ## Documentação da API
-A seguir abaixo está todas as rotas disponibilizada pela API, você também pode encontrar na pasta `docs` um arquivo JSON que é possivel exportar para o cliente http Postman uma _collection_ contendo todas as requests aqui explicadas.
+A seguir abaixo está todas as rotas disponibilizada pela API, você também pode encontrar na pasta `docs` um arquivo JSON que é possivel exportar para o [cliente http Postman](https://www.postman.com/downloads/) uma _collection_ contendo todas as requests aqui explicadas.
 
 ### Criar nova feira
 Esse endpoint cria uma nova feira
