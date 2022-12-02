@@ -45,6 +45,9 @@ class FileLogAdapter implements Logger
 
     private function saveOnFile($path, string $json)
     {
+        if (!file_exists(self::MAIN_PATH)) {
+            mkdir(self::MAIN_PATH, 0777, true);
+        }
         file_put_contents($path , $json.PHP_EOL, FILE_APPEND);
     }
 }
