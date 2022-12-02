@@ -5,6 +5,8 @@ Esse é uma a API simples feita em PHP 8.1 sem a utilização de frameworks, ape
 
 O sistema foi construído seguindo ~ou tentando~ a filosofia da Clean Architecture, procurando manter limites arquiteturais entre a regra de negócio e o resto do software.
 
+A API tem por objetivo o cadastro de feiras em regiões metropolitanas;
+
 ## Stack utilizada
 
 **Back-end:** PHP
