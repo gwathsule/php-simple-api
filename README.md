@@ -13,7 +13,7 @@ O sistema foi construído seguindo ~ou tentando~ a filosofia da Clean Architectu
 
 **Banco de dados:** Sqlite
 
-**Observabilidae:** Arquivo de texto .log
+**Observabilidade:** Arquivos de texto .log gerados na pasta `storage/logs/`
 
 ## Rodando localmente
 
